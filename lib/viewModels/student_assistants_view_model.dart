@@ -20,4 +20,12 @@ class StudentAssistantsViewModel extends ChangeNotifier {
   String get academicLevel => _studentAssistantModel.academicLevel;
   String get module => _studentAssistantModel.module;
   bool get meetRequirements => _studentAssistantModel.meetRequirements;
+
+  void createApplication() {
+    notifyListeners();
+  }
+
+  void updateApplication() {
+    notifyListeners();
+  }
 }
