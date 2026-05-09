@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_u/Components/pop_up.dart';
+import 'package:group_u/routesManager/routes_manager.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -46,6 +47,14 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, RouteManager.studentAssistantFormCreate);
+        },
+        backgroundColor: Colors.blueAccent,
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
