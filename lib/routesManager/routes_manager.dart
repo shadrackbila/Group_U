@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:group_u/views/admin_delete.dart';
 import 'package:group_u/views/admin_read.dart';
 import 'package:group_u/views/admin_update.dart';
 import 'package:group_u/views/application_details_delete.dart';
-import 'package:group_u/views/application_details_read.dart';
+//import 'package:group_u/views/application_details_read.dart';
 import 'package:group_u/views/authentication_screen.dart';
 import 'package:group_u/views/home_screen.dart';
 import 'package:group_u/views/student_assistant_form_create.dart';
@@ -30,16 +29,13 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => AdminDelete());
 
       case adminRead:
-        return MaterialPageRoute(builder: (_) => AdminRead());
+        return MaterialPageRoute(builder: (_) => AdminReadScreen());
 
       case adminUpdate:
         return MaterialPageRoute(builder: (_) => AdminUpdate());
 
       case applicationDetailsDelete:
         return MaterialPageRoute(builder: (_) => ApplicationDetailsDelete());
-
-      case applicationDetailsRead:
-        return MaterialPageRoute(builder: (_) => ApplicationDetailsRead());
 
       case authenticationScreen:
         return MaterialPageRoute(builder: (_) => AuthenticationScreen());
