@@ -6,6 +6,7 @@ class StudentAssistantModel {
   final String academicLevel;
   final String module;
   final bool meetRequirements;
+  final String status;
 
   StudentAssistantModel({
     required this.academicLevel,
@@ -15,6 +16,7 @@ class StudentAssistantModel {
     required this.surname,
     required this.secondModule,
     required this.secondModuleAcademicLevel,
+    required this.status,
   });
 
   StudentAssistantModel copyWith({
@@ -25,6 +27,7 @@ class StudentAssistantModel {
     String? surname,
     String? secondModule,
     String? secondModuleAcademicLevel,
+    String? status,
   }) {
     return StudentAssistantModel(
       academicLevel: academicLevel ?? this.academicLevel,
@@ -35,6 +38,7 @@ class StudentAssistantModel {
       secondModule: secondModule ?? this.secondModule,
       secondModuleAcademicLevel:
           secondModuleAcademicLevel ?? this.secondModuleAcademicLevel,
+      status: status ?? this.status,
     );
   }
 }
