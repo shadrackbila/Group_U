@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_u/routesManager/routes_manager.dart';
 
 class PopUp extends StatelessWidget {
   const PopUp({super.key});
@@ -75,7 +76,12 @@ class PopUp extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteManager.studentAssistantFormUpdate,
+                  );
+                },
                 child: Text(
                   "Edit",
                   style: TextStyle(

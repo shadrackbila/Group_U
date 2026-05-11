@@ -28,11 +28,42 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     required String academicLevel,
     required String secondModule,
   }) {
-    notifyListeners();
-    return true;
+    try {
+      _studentAssistantModel.copyWith(
+        name: name,
+        surname: surname,
+        module: module,
+        academicLevel: academicLevel,
+        secondModule: secondModule,
+      );
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
-  void updateApplication() {
-    notifyListeners();
+  bool updateApplication({
+    String? name,
+    String? surname,
+    String? module,
+    String? academicLevel,
+    String? secondModule,
+  }) {
+    try {
+      _studentAssistantModel.copyWith(
+        name: name,
+        surname: surname,
+        module: module,
+        academicLevel: academicLevel,
+        secondModule: secondModule,
+      );
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

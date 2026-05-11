@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:group_u/Components/pop_up_failed.dart';
+import 'package:group_u/Components/pop_up_success.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 
 class StudentAssistantFormCreate extends StatefulWidget {
@@ -14,6 +16,7 @@ class _StudentAssistantFormCreateState
   String? _selectedValueModule;
   String? _selectedValueYear;
   String? _selectedValueModuleOption2;
+  bool _results = false;
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -161,13 +164,25 @@ class _StudentAssistantFormCreateState
         backgroundColor: Colors.blue,
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            _assistantsViewModel.createApplication(
+            _results = _assistantsViewModel.createApplication(
               name: _nameController.text,
               surname: _surnameController.text,
               module: _selectedValueModule.toString(),
               academicLevel: _selectedValueYear.toString(),
               secondModule: _selectedValueModuleOption2.toString(),
             );
+
+            if (_results) {
+              showDialog(
+                context: context,
+                builder: (context) => Dialog(child: PopUpSuccess()),
+              ).then((_) => Navigator.pop(context));
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) => Dialog(child: PopUpFailed()),
+              ).then((_) => Navigator.pop(context));
+            }
           }
         },
         child: Text("Submit", style: TextStyle(color: Colors.white)),
