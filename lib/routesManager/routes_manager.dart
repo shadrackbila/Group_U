@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:group_u/viewModels/student_assistants_view_model.dart';
 import 'package:group_u/views/admin_delete.dart';
 import 'package:group_u/views/admin_read.dart';
 import 'package:group_u/views/admin_update.dart';
@@ -45,10 +46,18 @@ class RouteManager {
         return MaterialPageRoute(builder: (_) => AuthenticationScreen());
 
       case studentAssistantFormCreate:
-        return MaterialPageRoute(builder: (_) => StudentAssistantFormCreate());
+        return MaterialPageRoute(
+          builder: (_) => StudentAssistantFormCreate(
+            vm: settings.arguments as StudentAssistantsViewModel,
+          ),
+        );
 
       case studentAssistantFormUpdate:
-        return MaterialPageRoute(builder: (_) => StudentAssistantFormUpdate());
+        return MaterialPageRoute(
+          builder: (_) => StudentAssistantFormUpdate(
+            // vm: settings.arguments as StudentAssistantsViewModel,
+          ),
+        );
 
       default:
         throw Exception();

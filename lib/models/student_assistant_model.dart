@@ -2,7 +2,7 @@ class StudentAssistantModel {
   final String name;
   final String surname;
   final String secondModule;
-  final String secondModuleAcademicLevel;
+  final String status;
   final String academicLevel;
   final String module;
   final bool meetRequirements;
@@ -14,7 +14,7 @@ class StudentAssistantModel {
     required this.name,
     required this.surname,
     required this.secondModule,
-    required this.secondModuleAcademicLevel,
+    required this.status,
   });
 
   StudentAssistantModel copyWith({
@@ -24,7 +24,7 @@ class StudentAssistantModel {
     String? name,
     String? surname,
     String? secondModule,
-    String? secondModuleAcademicLevel,
+    String? status,
   }) {
     return StudentAssistantModel(
       academicLevel: academicLevel ?? this.academicLevel,
@@ -33,8 +33,7 @@ class StudentAssistantModel {
       name: name ?? this.name,
       surname: surname ?? this.surname,
       secondModule: secondModule ?? this.secondModule,
-      secondModuleAcademicLevel:
-          secondModuleAcademicLevel ?? this.secondModuleAcademicLevel,
+      status: status ?? this.status,
     );
   }
 }

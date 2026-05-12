@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:group_u/models/student_assistant_model.dart';
 
 class StudentAssistantsViewModel extends ChangeNotifier {
+  final List<StudentAssistantModel> _applications = [];
+
   final StudentAssistantModel _studentAssistantModel = StudentAssistantModel(
     academicLevel: "",
     module: "",
@@ -9,14 +11,14 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     name: "",
     surname: "",
     secondModule: "",
-    secondModuleAcademicLevel: "",
+    status: "",
   );
 
+  List<StudentAssistantModel> get applications => _applications.toList();
   String get name => _studentAssistantModel.name;
   String get surname => _studentAssistantModel.surname;
   String get secondModule => _studentAssistantModel.secondModule;
-  String get secondModuleAcademicLevel =>
-      _studentAssistantModel.secondModuleAcademicLevel;
+  String get secondModuleAcademicLevel => _studentAssistantModel.status;
   String get academicLevel => _studentAssistantModel.academicLevel;
   String get module => _studentAssistantModel.module;
   bool get meetRequirements => _studentAssistantModel.meetRequirements;
@@ -29,13 +31,16 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     required String secondModule,
   }) {
     try {
-      _studentAssistantModel.copyWith(
+      final newApplication = _studentAssistantModel.copyWith(
         name: name,
         surname: surname,
         module: module,
         academicLevel: academicLevel,
         secondModule: secondModule,
+        status: "pending",
       );
+
+      _applications.add(newApplication);
       notifyListeners();
       return true;
     } catch (e) {

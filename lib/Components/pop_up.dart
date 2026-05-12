@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:group_u/models/student_assistant_model.dart';
 import 'package:group_u/routesManager/routes_manager.dart';
 
 class PopUp extends StatelessWidget {
-  const PopUp({super.key});
+  final StudentAssistantModel application;
+  const PopUp({super.key, required this.application});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 300,
-      height: 200,
+      height: 300,
       padding: EdgeInsets.all(10),
 
       // Student Card section
@@ -28,7 +30,7 @@ class PopUp extends StatelessWidget {
                 ),
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  "Pending",
+                  application.status,
                   style: TextStyle(
                     color: const Color.fromARGB(255, 123, 93, 2),
                   ),
@@ -37,37 +39,42 @@ class PopUp extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(141, 64, 150, 255),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  "2nd Year",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 2, 91, 123),
-                  ),
-                ),
-              ),
-              SizedBox(width: 20),
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(141, 64, 150, 255),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  "SOD316C",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 2, 91, 123),
-                  ),
-                ),
-              ),
-            ],
+
+          Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(141, 64, 150, 255),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(5),
+            child: Text(
+              "${application.academicLevel} Year",
+              style: TextStyle(color: const Color.fromARGB(255, 2, 91, 123)),
+            ),
+          ),
+          SizedBox(height: 15),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(141, 64, 150, 255),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(5),
+            child: Text(
+              "Primary choice : ${application.module}",
+              style: TextStyle(color: const Color.fromARGB(255, 2, 91, 123)),
+            ),
+          ),
+
+          SizedBox(height: 15),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(141, 64, 150, 255),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(5),
+            child: Text(
+              "Secondary choice : ${application.secondModule}",
+              style: TextStyle(color: const Color.fromARGB(255, 2, 91, 123)),
+            ),
           ),
           SizedBox(height: 15),
           Text("Applied on: 13-05-2026"),
