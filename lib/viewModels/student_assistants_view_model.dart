@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:group_u/models/student_assistant_model.dart';
+import 'package:intl/intl.dart';
 
 class StudentAssistantsViewModel extends ChangeNotifier {
   final List<StudentAssistantModel> _applications = [];
 
   final StudentAssistantModel _studentAssistantModel = StudentAssistantModel(
+    id: 0,
     academicLevel: "",
     module: "",
     meetRequirements: false,
@@ -12,9 +14,10 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     surname: "",
     secondModule: "",
     status: "",
+    date: "",
   );
 
-  List<StudentAssistantModel> get applications => _applications.toList();
+  List<StudentAssistantModel> get applications => _applications;
   String get name => _studentAssistantModel.name;
   String get surname => _studentAssistantModel.surname;
   String get secondModule => _studentAssistantModel.secondModule;
@@ -31,13 +34,16 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     required String secondModule,
   }) {
     try {
+      DateTime now = DateTime.now();
       final newApplication = _studentAssistantModel.copyWith(
+        id: applications.length + 1,
         name: name,
         surname: surname,
         module: module,
         academicLevel: academicLevel,
         secondModule: secondModule,
         status: "pending",
+        date: DateFormat('dd-MMM-yyyy HH:mm').format(now),
       );
 
       _applications.add(newApplication);
@@ -55,15 +61,36 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     String? module,
     String? academicLevel,
     String? secondModule,
+    int? index,
   }) {
     try {
-      _studentAssistantModel.copyWith(
+      DateTime now = DateTime.now();
+
+      final existing = _applications[index!];
+
+      final updated = existing.copyWith(
         name: name,
         surname: surname,
         module: module,
         academicLevel: academicLevel,
         secondModule: secondModule,
+        status: "pending",
+        date: DateFormat('dd-MMM-yyyy HH:mm').format(now),
       );
+
+      _applications[index] = updated;
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  bool deleteApplication(int index) {
+    try {
+      _applications.removeAt(index);
       notifyListeners();
       return true;
     } catch (e) {

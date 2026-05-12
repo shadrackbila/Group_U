@@ -51,9 +51,8 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         showDialog(
                           context: context,
-                          builder: (context) => Dialog(
-                            child: PopUp(application: applications[index]),
-                          ),
+                          builder: (context) =>
+                              Dialog(child: PopUp(index: index)),
                         );
                       },
                       title: Text(applications[index].module),
