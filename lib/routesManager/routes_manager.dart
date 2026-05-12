@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:group_u/viewModels/student_assistants_view_model.dart';
 import 'package:group_u/views/admin_delete.dart';
 import 'package:group_u/views/admin_read.dart';
 import 'package:group_u/views/admin_update.dart';
@@ -24,31 +25,42 @@ class RouteManager {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case homeScreen:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
+        return MaterialPageRoute(builder: (context) => HomeScreen());
 
       case adminDelete:
-        return MaterialPageRoute(builder: (_) => AdminDelete());
+        return MaterialPageRoute(builder: (context) => AdminDelete());
 
       case adminRead:
-        return MaterialPageRoute(builder: (_) => AdminRead());
+        return MaterialPageRoute(builder: (context) => AdminRead());
 
       case adminUpdate:
-        return MaterialPageRoute(builder: (_) => AdminUpdate());
+        return MaterialPageRoute(builder: (context) => AdminUpdate());
 
       case applicationDetailsDelete:
-        return MaterialPageRoute(builder: (_) => ApplicationDetailsDelete());
+        return MaterialPageRoute(
+          builder: (context) => ApplicationDetailsDelete(),
+        );
 
       case applicationDetailsRead:
-        return MaterialPageRoute(builder: (_) => ApplicationDetailsRead());
+        return MaterialPageRoute(
+          builder: (context) => ApplicationDetailsRead(),
+        );
 
       case authenticationScreen:
-        return MaterialPageRoute(builder: (_) => AuthenticationScreen());
+        return MaterialPageRoute(builder: (context) => AuthenticationScreen());
 
       case studentAssistantFormCreate:
-        return MaterialPageRoute(builder: (_) => StudentAssistantFormCreate());
+        return MaterialPageRoute(
+          builder: (context) => StudentAssistantFormCreate(
+            vm: settings.arguments as StudentAssistantsViewModel,
+          ),
+        );
 
       case studentAssistantFormUpdate:
-        return MaterialPageRoute(builder: (_) => StudentAssistantFormUpdate());
+        return MaterialPageRoute(
+          builder: (context) =>
+              StudentAssistantFormUpdate(index: settings.arguments as int),
+        );
 
       default:
         throw Exception();

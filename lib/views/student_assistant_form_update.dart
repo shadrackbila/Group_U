@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:group_u/Components/pop_up_failed.dart';
 import 'package:group_u/Components/pop_up_success.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
+import 'package:provider/provider.dart';
 
 class StudentAssistantFormUpdate extends StatefulWidget {
-  const StudentAssistantFormUpdate({super.key});
+  final int index;
+  const StudentAssistantFormUpdate({super.key, required this.index});
 
   @override
   State<StudentAssistantFormUpdate> createState() =>
@@ -20,8 +22,13 @@ class _StudentAssistantFormUpdateState
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final StudentAssistantsViewModel _assistantsViewModel =
-      StudentAssistantsViewModel();
+  late StudentAssistantsViewModel _assistantsViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _assistantsViewModel = context.read<StudentAssistantsViewModel>();
+  }
 
   @override
   void dispose() {
@@ -136,12 +143,13 @@ class _StudentAssistantFormUpdateState
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          _results = _assistantsViewModel.createApplication(
+          _results = _assistantsViewModel.updateApplication(
             name: _nameController.text,
             surname: _surnameController.text,
             module: _selectedValueModule.toString(),
             academicLevel: _selectedValueYear.toString(),
             secondModule: _selectedValueModuleOption2.toString(),
+            index: widget.index,
           );
 
           if (_results) {

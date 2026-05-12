@@ -4,7 +4,8 @@ import 'package:group_u/Components/pop_up_success.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 
 class StudentAssistantFormCreate extends StatefulWidget {
-  const StudentAssistantFormCreate({super.key});
+  final StudentAssistantsViewModel vm;
+  const StudentAssistantFormCreate({super.key, required this.vm});
 
   @override
   State<StudentAssistantFormCreate> createState() =>
@@ -20,8 +21,6 @@ class _StudentAssistantFormCreateState
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final StudentAssistantsViewModel _assistantsViewModel =
-      StudentAssistantsViewModel();
 
   @override
   void dispose() {
@@ -164,7 +163,7 @@ class _StudentAssistantFormCreateState
         backgroundColor: Colors.blue,
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            _results = _assistantsViewModel.createApplication(
+            _results = widget.vm.createApplication(
               name: _nameController.text,
               surname: _surnameController.text,
               module: _selectedValueModule.toString(),
