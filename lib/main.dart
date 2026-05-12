@@ -10,16 +10,17 @@ import 'package:group_u/views/admin_read.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Supabase
   await Supabase.initialize(
-    url: 'YOUR_SUPABASE_URL',      // Get from your Supabase project
-    anonKey: 'YOUR_SUPABASE_ANON_KEY', // Get from your Supabase project
+    url: 'https://rpvugydbwxzvfuxjmmqb.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwdnVneWRid3h6dmZ1eGptbXFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5OTE0MzksImV4cCI6MjA5MzU2NzQzOX0.xiadsYpYE5tY0FpOWLBCuJDpeGONfkUmN2H1SEe7TTU',
   );
-  
+
   // Initialize the service with the Supabase client
   SupabaseService().initialize(Supabase.instance.client);
-  
+
   runApp(const MyApp());
 }
 
@@ -30,7 +31,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthViewModel()..checkAuthStatus()),
+        ChangeNotifierProvider(
+          create: (_) => AuthViewModel()..checkAuthStatus(),
+        ),
         ChangeNotifierProvider(create: (_) => StudentAssistantsViewModel()),
       ],
       child: MaterialApp(
