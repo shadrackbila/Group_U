@@ -3,7 +3,45 @@ import 'package:group_u/models/student_assistant_model.dart';
 import 'package:intl/intl.dart';
 
 class StudentAssistantsViewModel extends ChangeNotifier {
-  final List<StudentAssistantModel> _applications = [];
+  // final List<StudentAssistantModel> _applications = [];
+  final List<StudentAssistantModel> _applications = [
+    StudentAssistantModel(
+      id: 1,
+      studentNumber: "123456789",
+      name: "John",
+      surname: "Doe",
+      academicLevel: "3",
+      module: "CSY301",
+      secondModule: "CSY201",
+      meetRequirements: true,
+      status: "pending",
+      date: "13-May-2026 08:30",
+    ),
+    StudentAssistantModel(
+      id: 2,
+      studentNumber: "987654321",
+      name: "Jane",
+      surname: "Smith",
+      academicLevel: "2",
+      module: "CSY201",
+      secondModule: "",
+      meetRequirements: true,
+      status: "accepted",
+      date: "12-May-2026 14:15",
+    ),
+    StudentAssistantModel(
+      id: 3,
+      studentNumber: "456789123",
+      name: "Bob",
+      surname: "Johnson",
+      academicLevel: "4",
+      module: "CSY401",
+      secondModule: "CSY301",
+      meetRequirements: false,
+      status: "rejected",
+      date: "11-May-2026 10:00",
+    ),
+  ];
 
   final StudentAssistantModel _studentAssistantModel = StudentAssistantModel(
     id: 0,
@@ -77,6 +115,7 @@ class StudentAssistantsViewModel extends ChangeNotifier {
     int? index,
     bool? meetRequirements,
     String? studentNumber,
+    String? status,
   }) {
     try {
       DateTime now = DateTime.now();
@@ -89,7 +128,7 @@ class StudentAssistantsViewModel extends ChangeNotifier {
         module: module,
         academicLevel: academicLevel,
         secondModule: secondModule,
-        status: "pending",
+        status: status,
         date: DateFormat('dd-MMM-yyyy HH:mm').format(now),
         meetRequirements: meetRequirements,
         studentNumber: studentNumber,

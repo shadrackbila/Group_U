@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:group_u/Components/pop_up_confirm_delete.dart';
 import 'package:group_u/Components/pop_up_failed.dart';
 import 'package:group_u/Components/pop_up_success.dart';
+import 'package:group_u/Components/status.dart';
 import 'package:group_u/models/student_assistant_model.dart';
 import 'package:group_u/routesManager/routes_manager.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
@@ -32,19 +33,7 @@ class PopUp extends StatelessWidget {
                     "Student Assistant",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(141, 255, 214, 64),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      application.status,
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 123, 93, 2),
-                      ),
-                    ),
-                  ),
+                  Status(status: application.status),
                 ],
               ),
               SizedBox(height: 20),

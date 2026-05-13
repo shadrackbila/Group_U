@@ -16,8 +16,8 @@ class RouteManager {
   static const String adminDelete = "/admin/delete";
   static const String adminRead = "/admin/read";
   static const String adminUpdate = "/admin/update";
-  static const String applicationDetailsDelete = "";
-  static const String applicationDetailsRead = "";
+  static const String applicationDetailsDelete = "/application/delete";
+  static const String applicationDetailsRead = "/application/read";
   static const String authenticationScreen = "/authenticate";
   static const String studentAssistantFormCreate = "/student_assistant/create";
   static const String studentAssistantFormUpdate = "/student_assistant/update";
@@ -34,7 +34,9 @@ class RouteManager {
         return MaterialPageRoute(builder: (context) => AdminRead());
 
       case adminUpdate:
-        return MaterialPageRoute(builder: (context) => AdminUpdate());
+        return MaterialPageRoute(
+          builder: (context) => AdminUpdate(index: settings.arguments as int),
+        );
 
       case applicationDetailsDelete:
         return MaterialPageRoute(

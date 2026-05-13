@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:group_u/Components/pop_up.dart';
+import 'package:group_u/Components/status.dart';
 import 'package:group_u/models/student_assistant_model.dart';
 import 'package:group_u/routesManager/routes_manager.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  //set your role here [Who ever who is working on autherisation]
+  final String role = "admin";
+
+  @override
+  void initState() {
+    super.initState();
+    if (role == "admin") {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamed(context, RouteManager.adminRead);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,19 +81,7 @@ class HomeScreen extends StatelessWidget {
                             )
                           : null,
 
-                      trailing: Container(
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(141, 255, 214, 64),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.all(5),
-                        child: Text(
-                          applications[index].status,
-                          style: TextStyle(
-                            color: const Color.fromARGB(255, 123, 93, 2),
-                          ),
-                        ),
-                      ),
+                      trailing: Status(status: applications[index].status),
                     );
                   },
                 ),
@@ -93,6 +100,7 @@ class HomeScreen extends StatelessWidget {
             arguments: vm,
           );
         },
+
         backgroundColor: Colors.blueAccent,
         child: Icon(Icons.add, color: Colors.white),
       ),
