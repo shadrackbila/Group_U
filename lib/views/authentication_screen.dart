@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewModels/auth_view_model.dart';
-import 'home_screen.dart';
-import 'admin_read.dart';
+import '../routesManager/routes_manager.dart';
+// import 'home_screen.dart';
+//import 'admin_read.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({super.key});
@@ -36,15 +37,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     if (success && mounted) {
       // Navigate based on role
       if (authVM.currentUserRole == 'admin') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const AdminReadScreen()),
-        );
+        Navigator.pushReplacementNamed(context, RouteManager.adminRead);
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+        Navigator.pushReplacementNamed(context, RouteManager.homeScreen);
       }
     }
   }

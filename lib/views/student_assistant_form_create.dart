@@ -18,8 +18,8 @@ class _StudentAssistantFormCreateState
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-//  final StudentAssistantsViewModel _assistantsViewModel =
-//      StudentAssistantsViewModel();
+// final StudentAssistantsViewModel _assistantsViewModel =
+  //    StudentAssistantsViewModel();
 
   @override
   void dispose() {
@@ -106,9 +106,9 @@ class _StudentAssistantFormCreateState
                 ),
 
                 items: [
-                  DropdownMenuItem(value: "option1", child: Text("option 1")),
-                  DropdownMenuItem(value: "option2", child: Text("option 2")),
-                  DropdownMenuItem(value: "option3", child: Text("option 3")),
+                  DropdownMenuItem(value: "CMN316", child: Text("CMN316")),
+                  DropdownMenuItem(value: "SSE316", child: Text("SSE316")),
+                  DropdownMenuItem(value: "MAT316", child: Text("MAT316")),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -176,6 +176,7 @@ class _StudentAssistantFormCreateState
               meetRequirements: true,
               );
 
+              // ignore: use_build_context_synchronously
               ScaffoldMessenger.of(context)
               .showSnackBar(
                 const SnackBar(content: 
