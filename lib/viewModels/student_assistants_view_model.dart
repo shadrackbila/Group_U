@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:group_u/models/student_assistant_model.dart';
+import 'package:group_u/services/student_assistant_service.dart';
 
 class StudentAssistantsViewModel extends ChangeNotifier {
+  final StudentAssistantService _service = StudentAssistantService();
   final StudentAssistantModel _studentAssistantModel = StudentAssistantModel(
     academicLevel: "",
     module: "",
@@ -21,16 +23,27 @@ class StudentAssistantsViewModel extends ChangeNotifier {
   String get module => _studentAssistantModel.module;
   bool get meetRequirements => _studentAssistantModel.meetRequirements;
 
-  bool createApplication({
-    required String name,
-    required String surname,
-    required String module,
-    required String academicLevel,
-    required String secondModule,
-  }) {
-    notifyListeners();
-    return true;
-  }
+Future<void> createApplication({
+  required String name,
+  required String surname,
+  required String academicLevel,
+  required String module,
+  required String secondModule,
+  required String secondModuleLevel,
+  required bool meetRequirements,
+}) async {
+  await _service.createApplication(
+    name: name,
+    surname: surname,
+    academicLevel: academicLevel,
+    module: module,
+    secondModule: secondModule,
+    secondModuleLevel: secondModuleLevel,
+    meetRequirements: meetRequirements,
+  );
+
+  notifyListeners();
+}
 
   void updateApplication() {
     notifyListeners();

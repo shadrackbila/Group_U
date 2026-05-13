@@ -50,7 +50,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
   
-  // Check authentication status on app start
+  // To check authentication status on app start
   Future<void> checkAuthStatus() async {
     if (_authService.isLoggedIn) {
       final userId = _authService.currentSession!.user.id;

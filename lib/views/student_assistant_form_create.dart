@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 
 class StudentAssistantFormCreate extends StatefulWidget {
@@ -17,8 +18,8 @@ class _StudentAssistantFormCreateState
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final StudentAssistantsViewModel _assistantsViewModel =
-      StudentAssistantsViewModel();
+//  final StudentAssistantsViewModel _assistantsViewModel =
+//      StudentAssistantsViewModel();
 
   @override
   void dispose() {
@@ -39,7 +40,7 @@ class _StudentAssistantFormCreateState
         padding: EdgeInsets.all(10),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               TextFormField(
                 controller: _nameController,
@@ -79,9 +80,9 @@ class _StudentAssistantFormCreateState
                   border: OutlineInputBorder(),
                 ),
                 items: [
-                  DropdownMenuItem(value: "option1", child: Text("Option 1")),
-                  DropdownMenuItem(value: "option2", child: Text("Option 2")),
-                  DropdownMenuItem(value: "option3", child: Text("Option 3")),
+                  DropdownMenuItem(value: "TPG316", child: Text("TPG316")),
+                  DropdownMenuItem(value: "SOD316", child: Text("SOD316")),
+                  DropdownMenuItem(value: "SOE316", child: Text("SOE316")),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -159,15 +160,28 @@ class _StudentAssistantFormCreateState
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            _assistantsViewModel.createApplication(
+        onPressed: () async {
+          if(_formKey.currentState!.validate()){
+            
+            await Provider.of<StudentAssistantsViewModel>(
+              context,
+              listen: false,
+            ).createApplication(
               name: _nameController.text,
               surname: _surnameController.text,
-              module: _selectedValueModule.toString(),
-              academicLevel: _selectedValueYear.toString(),
-              secondModule: _selectedValueModuleOption2.toString(),
-            );
+              academicLevel: _selectedValueYear.toString(), 
+              module: _selectedValueModule.toString(), 
+              secondModule: _selectedValueYear.toString(), 
+              secondModuleLevel: _selectedValueYear.toString(), 
+              meetRequirements: true,
+              );
+
+              ScaffoldMessenger.of(context)
+              .showSnackBar(
+                const SnackBar(content: 
+                Text("Application Submitted"),
+                )
+              );
           }
         },
         child: Text("Submit", style: TextStyle(color: Colors.white)),

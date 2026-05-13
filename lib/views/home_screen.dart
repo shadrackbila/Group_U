@@ -3,20 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:group_u/Components/pop_up.dart';
 import 'package:group_u/routesManager/routes_manager.dart';
 import 'package:group_u/viewModels/auth_view_model.dart';  
-import 'package:group_u/views/authentication_screen.dart';  
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  // ADD THIS METHOD HERE
   void _logout(BuildContext context) async {
     final authVM = Provider.of<AuthViewModel>(context, listen: false);
     await authVM.logout();
-    if (context.mounted) {  
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AuthenticationScreen()),
-      );
+    if (context.mounted) {
+      Navigator.pushReplacementNamed(context, RouteManager.authenticationScreen);
     }
   }
 
@@ -27,7 +22,6 @@ class HomeScreen extends StatelessWidget {
         title: const Text("My Applications", style: TextStyle(color: Colors.white)),
         centerTitle: false,
         backgroundColor: Colors.blue,
-        
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),

@@ -4,17 +4,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:group_u/viewModels/auth_view_model.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 import 'package:group_u/services/supabase_service.dart';
+import 'package:group_u/routesManager/routes_manager.dart';  
 import 'package:group_u/views/authentication_screen.dart';
-import 'package:group_u/views/home_screen.dart';
-import 'package:group_u/views/admin_read.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Supabase
   await Supabase.initialize(
-    url: 'YOUR_SUPABASE_URL',      // Get from your Supabase project
-    anonKey: 'YOUR_SUPABASE_ANON_KEY', // Get from your Supabase project
+    url: 'https://oitkwvnzkvkgejplqxwf.supabase.co',      // Got from your Supabase project
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pdGt3dm56a3ZrZ2VqcGxxeHdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzMzU1NzAsImV4cCI6MjA5MzkxMTU3MH0.jqnyZED56aKVt_3778otjd74YO2dofBoGgIdOnaFXfg', // Got from your Supabase project
   );
   
   // Initialize the service with the Supabase client
@@ -40,20 +38,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: Consumer<AuthViewModel>(
-          builder: (context, authVM, child) {
-            if (authVM.isLoggedIn) {
-              // User is already logged in, go to appropriate screen
-              if (authVM.currentUserRole == 'admin') {
-                return const AdminReadScreen();
-              } else {
-                return const HomeScreen();
-              }
-            }
-            return const AuthenticationScreen();
-          },
+        initialRoute: RouteManager.authenticationScreen,
+        onGenerateRoute: RouteManager.generateRoute,
+       
         ),
-      ),
-    );
+      );
   }
 }
