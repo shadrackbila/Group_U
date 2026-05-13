@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:group_u/Components/pop_up_confirm_delete.dart';
 import 'package:group_u/Components/pop_up_failed.dart';
 import 'package:group_u/Components/pop_up_success.dart';
 import 'package:group_u/models/student_assistant_model.dart';
@@ -118,21 +119,10 @@ class PopUp extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pop(context);
-                      bool results = context
-                          .read<StudentAssistantsViewModel>()
-                          .deleteApplication(index);
-
-                      if (results) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => Dialog(child: PopUpSuccess()),
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => Dialog(child: PopUpFailed()),
-                        );
-                      }
+                      showDialog(
+                        context: context,
+                        builder: (context) => PopUpConfirmDelete(index: index),
+                      );
                     },
                     child: Text(
                       "Delete",

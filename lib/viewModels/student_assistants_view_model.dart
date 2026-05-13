@@ -7,6 +7,7 @@ class StudentAssistantsViewModel extends ChangeNotifier {
 
   final StudentAssistantModel _studentAssistantModel = StudentAssistantModel(
     id: 0,
+    studentNumber: "",
     academicLevel: "",
     module: "",
     meetRequirements: false,
@@ -25,15 +26,25 @@ class StudentAssistantsViewModel extends ChangeNotifier {
   String get academicLevel => _studentAssistantModel.academicLevel;
   String get module => _studentAssistantModel.module;
   bool get meetRequirements => _studentAssistantModel.meetRequirements;
+  String get studentNumber => _studentAssistantModel.studentNumber;
+  int get id => _studentAssistantModel.id;
 
-  bool createApplication({
+  (bool, String) createApplication({
+    required String studentNumber,
     required String name,
     required String surname,
     required String module,
     required String academicLevel,
     required String secondModule,
+    required bool meetRequirements,
   }) {
     try {
+      bool alreadyApplied = _applications.any(
+        (a) => a.studentNumber == studentNumber,
+      );
+      if (alreadyApplied)
+        return (false, "You have already submitted an application.");
+
       DateTime now = DateTime.now();
       final newApplication = _studentAssistantModel.copyWith(
         id: applications.length + 1,
@@ -44,24 +55,28 @@ class StudentAssistantsViewModel extends ChangeNotifier {
         secondModule: secondModule,
         status: "pending",
         date: DateFormat('dd-MMM-yyyy HH:mm').format(now),
+        meetRequirements: meetRequirements,
+        studentNumber: studentNumber,
       );
 
       _applications.add(newApplication);
       notifyListeners();
-      return true;
+      return (true, "Application created successfuly");
     } catch (e) {
       print(e);
-      return false;
+      return (false, e.toString());
     }
   }
 
-  bool updateApplication({
+  (bool, String) updateApplication({
     String? name,
     String? surname,
     String? module,
     String? academicLevel,
     String? secondModule,
     int? index,
+    bool? meetRequirements,
+    String? studentNumber,
   }) {
     try {
       DateTime now = DateTime.now();
@@ -76,26 +91,28 @@ class StudentAssistantsViewModel extends ChangeNotifier {
         secondModule: secondModule,
         status: "pending",
         date: DateFormat('dd-MMM-yyyy HH:mm').format(now),
+        meetRequirements: meetRequirements,
+        studentNumber: studentNumber,
       );
 
       _applications[index] = updated;
 
       notifyListeners();
-      return true;
+      return (true, "Application updated successfully");
     } catch (e) {
       print(e);
-      return false;
+      return (false, e.toString());
     }
   }
 
-  bool deleteApplication(int index) {
+  (bool, String) deleteApplication(int index) {
     try {
       _applications.removeAt(index);
       notifyListeners();
-      return true;
+      return (true, "Deleted successully");
     } catch (e) {
       print(e);
-      return false;
+      return (false, e.toString());
     }
   }
 }

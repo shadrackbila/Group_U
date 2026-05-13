@@ -56,9 +56,12 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                       title: Text(applications[index].module),
-                      subtitle: Text(
-                        "Second Module: ${applications[index].secondModule} ",
-                      ),
+                      subtitle: applications[index].secondModule.isNotEmpty
+                          ? Text(
+                              "Second Module: ${applications[index].secondModule}",
+                            )
+                          : null,
+
                       trailing: Container(
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(141, 255, 214, 64),

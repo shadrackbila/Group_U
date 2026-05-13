@@ -1,5 +1,6 @@
 class StudentAssistantModel {
   final int id;
+  final String studentNumber;
   final String name;
   final String surname;
   final String secondModule;
@@ -11,6 +12,7 @@ class StudentAssistantModel {
 
   StudentAssistantModel({
     required this.id,
+    required this.studentNumber,
     required this.academicLevel,
     required this.module,
     required this.meetRequirements,
@@ -23,6 +25,7 @@ class StudentAssistantModel {
 
   StudentAssistantModel copyWith({
     int? id,
+    String? studentNumber,
     String? academicLevel,
     String? module,
     bool? meetRequirements,
@@ -34,6 +37,7 @@ class StudentAssistantModel {
   }) {
     return StudentAssistantModel(
       id: id ?? this.id,
+      studentNumber: studentNumber ?? this.studentNumber,
       academicLevel: academicLevel ?? this.academicLevel,
       module: module ?? this.module,
       meetRequirements: meetRequirements ?? this.meetRequirements,

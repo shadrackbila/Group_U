@@ -18,9 +18,11 @@ class _StudentAssistantFormUpdateState
   String? _selectedValueModule;
   String? _selectedValueYear;
   String? _selectedValueModuleOption2;
+  bool _meetRequirements = false;
   bool _results = false;
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
+  final _studentNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late StudentAssistantsViewModel _assistantsViewModel;
 
@@ -28,6 +30,15 @@ class _StudentAssistantFormUpdateState
   void initState() {
     super.initState();
     _assistantsViewModel = context.read<StudentAssistantsViewModel>();
+
+    final existing = _assistantsViewModel.applications[widget.index];
+    _nameController.text = existing.name;
+    _surnameController.text = existing.surname;
+    _selectedValueModule = existing.module;
+    _selectedValueYear = existing.academicLevel;
+    _selectedValueModuleOption2 = existing.secondModule;
+    _meetRequirements = existing.meetRequirements;
+    _studentNumberController.text = existing.studentNumber;
   }
 
   @override
@@ -55,6 +66,29 @@ class _StudentAssistantFormUpdateState
           child: Column(
             children: [
               TextFormField(
+                controller: _studentNumberController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Student number",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Student number is required";
+                  }
+                  if (value.length != 9) {
+                    return "Student number must be exactly 9 digits";
+                  }
+                  if (!RegExp(r'^\d{9}$').hasMatch(value)) {
+                    return "Student number must contain numbers only";
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 10),
+
+              TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
                   labelText: "Name",
@@ -70,6 +104,31 @@ class _StudentAssistantFormUpdateState
                   labelText: "Surname",
                   border: OutlineInputBorder(),
                 ),
+              ),
+
+              SizedBox(height: 10),
+
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: "Year of study",
+                  border: OutlineInputBorder(),
+                ),
+
+                items: [
+                  DropdownMenuItem(value: "1", child: Text("1st Year")),
+                  DropdownMenuItem(value: "2", child: Text("2nd Year")),
+                  DropdownMenuItem(value: "3", child: Text("3rd Year")),
+                  DropdownMenuItem(value: "4", child: Text("4th Year")),
+                  DropdownMenuItem(
+                    value: "postGraduate",
+                    child: Text("Post graduate"),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedValueYear = value;
+                  });
+                },
               ),
 
               SizedBox(height: 10),
@@ -111,28 +170,13 @@ class _StudentAssistantFormUpdateState
                 },
               ),
 
-              SizedBox(height: 10),
+              SizedBox(height: 20),
 
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: "Year of study",
-                  border: OutlineInputBorder(),
-                ),
-
-                items: [
-                  DropdownMenuItem(value: "1", child: Text("1st Year")),
-                  DropdownMenuItem(value: "2", child: Text("2nd Year")),
-                  DropdownMenuItem(value: "3", child: Text("3rd Year")),
-                  DropdownMenuItem(value: "4", child: Text("4th Year")),
-                  DropdownMenuItem(
-                    value: "postGraduate",
-                    child: Text("Post graduate"),
-                  ),
-                ],
+              CheckboxListTile(
+                title: Text("I meet the minimum requirements"),
+                value: _meetRequirements,
                 onChanged: (value) {
-                  setState(() {
-                    _selectedValueYear = value;
-                  });
+                  setState(() => _meetRequirements = value ?? false);
                 },
               ),
             ],
@@ -143,25 +187,33 @@ class _StudentAssistantFormUpdateState
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          _results = _assistantsViewModel.updateApplication(
-            name: _nameController.text,
-            surname: _surnameController.text,
-            module: _selectedValueModule.toString(),
-            academicLevel: _selectedValueYear.toString(),
-            secondModule: _selectedValueModuleOption2.toString(),
-            index: widget.index,
-          );
+          if (_formKey.currentState!.validate()) {
+            final (success, message) = _assistantsViewModel.updateApplication(
+              name: _nameController.text,
+              studentNumber: _studentNumberController.text,
+              surname: _surnameController.text,
+              module: _selectedValueModule.toString(),
+              academicLevel: _selectedValueYear.toString(),
+              secondModule: _selectedValueModuleOption2 ?? "",
+              index: widget.index,
+              meetRequirements: _meetRequirements,
+            );
 
-          if (_results) {
-            showDialog(
-              context: context,
-              builder: (context) => Dialog(child: PopUpSuccess()),
-            ).then((_) => Navigator.pop(context));
-          } else {
-            showDialog(
-              context: context,
-              builder: (context) => Dialog(child: PopUpFailed()),
-            ).then((_) => Navigator.pop(context));
+            _results = success;
+
+            if (_results) {
+              showDialog(
+                context: context,
+                builder: (context) =>
+                    Dialog(child: PopUpSuccess(message: message)),
+              ).then((_) => Navigator.pop(context));
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) =>
+                    Dialog(child: PopUpFailed(errorMessage: message)),
+              ).then((_) => Navigator.pop(context));
+            }
           }
         },
         child: Text("Submit", style: TextStyle(color: Colors.white)),
