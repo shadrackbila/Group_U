@@ -5,7 +5,6 @@ import 'package:group_u/viewModels/auth_view_model.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 import 'package:group_u/services/supabase_service.dart';
 import 'package:group_u/routesManager/routes_manager.dart';  
-import 'package:group_u/views/authentication_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   

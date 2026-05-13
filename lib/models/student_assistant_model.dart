@@ -1,40 +1,51 @@
 class StudentAssistantModel {
+  final int id;
+  final String studentNumber;
   final String name;
   final String surname;
-  final String secondModule;
-  final String secondModuleAcademicLevel;
   final String academicLevel;
   final String module;
+  final String secondModule;
   final bool meetRequirements;
+  final String status;
+  final String date;
 
   StudentAssistantModel({
-    required this.academicLevel,
-    required this.module,
-    required this.meetRequirements,
+    required this.id,
+    required this.studentNumber,
     required this.name,
     required this.surname,
+    required this.academicLevel,
+    required this.module,
     required this.secondModule,
-    required this.secondModuleAcademicLevel,
+    required this.meetRequirements,
+    required this.status,
+    required this.date,
   });
 
   StudentAssistantModel copyWith({
+    int? id,
+    String? studentNumber,
     String? academicLevel,
     String? module,
     bool? meetRequirements,
     String? name,
     String? surname,
     String? secondModule,
-    String? secondModuleAcademicLevel,
+    String? status,
+    String? date,
   }) {
     return StudentAssistantModel(
+      id: id ?? this.id,
+      studentNumber: studentNumber ?? this.studentNumber,
       academicLevel: academicLevel ?? this.academicLevel,
       module: module ?? this.module,
       meetRequirements: meetRequirements ?? this.meetRequirements,
       name: name ?? this.name,
       surname: surname ?? this.surname,
       secondModule: secondModule ?? this.secondModule,
-      secondModuleAcademicLevel:
-          secondModuleAcademicLevel ?? this.secondModuleAcademicLevel,
+      status: status ?? this.status,
+      date: date ?? this.date,
     );
   }
 }

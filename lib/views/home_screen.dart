@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';  
 import 'package:group_u/Components/pop_up.dart';
+import 'package:group_u/Components/status.dart';
+import 'package:group_u/models/student_assistant_model.dart';
 import 'package:group_u/routesManager/routes_manager.dart';
-import 'package:group_u/viewModels/auth_view_model.dart';  
+import 'package:group_u/viewModels/student_assistants_view_model.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  void _logout(BuildContext context) async {
-    final authVM = Provider.of<AuthViewModel>(context, listen: false);
-    await authVM.logout();
-    if (context.mounted) {
-      Navigator.pushReplacementNamed(context, RouteManager.authenticationScreen);
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  //set your role here [Who ever who is working on autherisation]
+  final String role = "admin";
+
+  @override
+  void initState() {
+    super.initState();
+    if (role == "admin") {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushNamed(context, RouteManager.adminRead);
+      });
     }
   }
 
@@ -19,57 +31,78 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Applications", style: TextStyle(color: Colors.white)),
+        title: Text("My Applications", style: TextStyle(color: Colors.white)),
+
         centerTitle: false,
         backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () => _logout(context),
-            tooltip: 'Logout',
-          ),
-        ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 7,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(child: PopUp()),
+      body: Consumer<StudentAssistantsViewModel>(
+        builder: (context, value, child) {
+          final List<StudentAssistantModel> applications = value.applications;
+          if (applications.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.folder_open, size: 80, color: Colors.grey),
+                  SizedBox(height: 10),
+                  Text(
+                    "No applications yet",
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    "Tap the + button to create one",
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: applications.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) =>
+                              Dialog(child: PopUp(index: index)),
+                        );
+                      },
+                      title: Text(applications[index].module),
+                      subtitle: applications[index].secondModule.isNotEmpty
+                          ? Text(
+                              "Second Module: ${applications[index].secondModule}",
+                            )
+                          : null,
+
+                      trailing: Status(status: applications[index].status),
                     );
                   },
-                  title: Text("item #: $index"),
-                  subtitle: const Text("Status: "),
-                  trailing: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(141, 255, 214, 64),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: const Text(
-                      "Pending",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 123, 93, 2),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, RouteManager.studentAssistantFormCreate);
+          var vm = context.read<StudentAssistantsViewModel>();
+          Navigator.pushNamed(
+            context,
+            RouteManager.studentAssistantFormCreate,
+            arguments: vm,
+          );
         },
+
         backgroundColor: Colors.blueAccent,
-        child: const Icon(Icons.add, color: Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }

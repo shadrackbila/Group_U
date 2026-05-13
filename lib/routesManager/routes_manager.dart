@@ -1,5 +1,5 @@
-// ignore_for_file: avoid_print
 import 'package:flutter/material.dart';
+import 'package:group_u/viewModels/student_assistants_view_model.dart';
 import 'package:group_u/views/admin_delete.dart';
 import 'package:group_u/views/admin_read.dart';
 import 'package:group_u/views/admin_update.dart';
@@ -11,7 +11,7 @@ import 'package:group_u/views/student_assistant_form_create.dart';
 import 'package:group_u/views/student_assistant_form_update.dart';
 
 class RouteManager {
-  static const String homeScreen = "/home";
+  static const String homeScreen = "/";
   static const String adminDelete = "/admin/delete";
   static const String adminRead = "/admin/read";
   static const String adminUpdate = "/admin/update";
@@ -22,66 +22,49 @@ class RouteManager {
   static const String studentAssistantFormUpdate = "/student_assistant/update";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    print("Navigating to: ${settings.name}");
     switch (settings.name) {
       case homeScreen:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (context) => HomeScreen());
 
       case adminDelete:
-        return MaterialPageRoute(builder: (_) => const AdminDelete());
+        return MaterialPageRoute(builder: (context) => AdminDelete());
 
       case adminRead:
-        return MaterialPageRoute(builder: (_) => const AdminReadScreen());
+        return MaterialPageRoute(builder: (context) => AdminRead());
 
       case adminUpdate:
-        return MaterialPageRoute(builder: (_) => const AdminUpdate());
+        return MaterialPageRoute(
+          builder: (context) => AdminUpdate(index: settings.arguments as int),
+        );
 
       case applicationDetailsDelete:
         return MaterialPageRoute(
-          builder: (_) => const ApplicationDetailsDelete(),
+          builder: (context) => ApplicationDetailsDelete(),
         );
 
       case applicationDetailsRead:
         return MaterialPageRoute(
-          builder: (_) => const ApplicationDetailsRead(),
+          builder: (context) => ApplicationDetailsRead(),
         );
 
       case authenticationScreen:
-        return MaterialPageRoute(builder: (_) => const AuthenticationScreen());
+        return MaterialPageRoute(builder: (context) => AuthenticationScreen());
 
       case studentAssistantFormCreate:
         return MaterialPageRoute(
-          builder: (_) => const StudentAssistantFormCreate(),
+          builder: (context) => StudentAssistantFormCreate(
+            vm: settings.arguments as StudentAssistantsViewModel,
+          ),
         );
 
       case studentAssistantFormUpdate:
         return MaterialPageRoute(
-          builder: (_) => const StudentAssistantFormUpdate(),
+          builder: (context) =>
+              StudentAssistantFormUpdate(index: settings.arguments as int),
         );
 
       default:
-        // error handling
-        print("Route not found: ${settings.name}");
-        return MaterialPageRoute(
-          builder: (context) => Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Route not found'),
-                  Text('${settings.name}'),
-                  ElevatedButton(
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      RouteManager.authenticationScreen,
-                    ),
-                    child: const Text('Go to Login'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+        throw Exception();
     }
   }
 }

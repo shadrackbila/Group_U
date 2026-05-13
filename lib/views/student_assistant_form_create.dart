@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:group_u/Components/pop_up_failed.dart';
+import 'package:group_u/Components/pop_up_success.dart';
 import 'package:group_u/viewModels/student_assistants_view_model.dart';
 
 class StudentAssistantFormCreate extends StatefulWidget {
-  const StudentAssistantFormCreate({super.key});
+  final StudentAssistantsViewModel vm;
+  const StudentAssistantFormCreate({super.key, required this.vm});
 
   @override
   State<StudentAssistantFormCreate> createState() =>
@@ -15,16 +17,18 @@ class _StudentAssistantFormCreateState
   String? _selectedValueModule;
   String? _selectedValueYear;
   String? _selectedValueModuleOption2;
+  bool _meetRequirements = false;
+  bool _results = false;
   final _surnameController = TextEditingController();
   final _nameController = TextEditingController();
+  final _studentNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-// final StudentAssistantsViewModel _assistantsViewModel =
-  //    StudentAssistantsViewModel();
 
   @override
   void dispose() {
     _nameController.dispose();
     _surnameController.dispose();
+    _studentNumberController.dispose();
     super.dispose();
   }
 
@@ -40,8 +44,30 @@ class _StudentAssistantFormCreateState
         padding: EdgeInsets.all(10),
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Column(
             children: [
+              TextFormField(
+                controller: _studentNumberController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Student number",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Student number is required";
+                  }
+                  if (value.length != 9) {
+                    return "Student number must be exactly 9 digits";
+                  }
+                  if (!RegExp(r'^\d{9}$').hasMatch(value)) {
+                    return "Student number must contain numbers only";
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 10),
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -67,57 +93,6 @@ class _StudentAssistantFormCreateState
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Surname is required";
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: 10),
-
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: "Module",
-                  border: OutlineInputBorder(),
-                ),
-                items: [
-                  DropdownMenuItem(value: "TPG316", child: Text("TPG316")),
-                  DropdownMenuItem(value: "SOD316", child: Text("SOD316")),
-                  DropdownMenuItem(value: "SOE316", child: Text("SOE316")),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedValueModule = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Module is required";
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: 10),
-
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(
-                  labelText: "Second Module option",
-                  border: OutlineInputBorder(),
-                ),
-
-                items: [
-                  DropdownMenuItem(value: "CMN316", child: Text("CMN316")),
-                  DropdownMenuItem(value: "SSE316", child: Text("SSE316")),
-                  DropdownMenuItem(value: "MAT316", child: Text("MAT316")),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedValueModuleOption2 = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Select a secondary module";
                   }
                   return null;
                 },
@@ -153,6 +128,61 @@ class _StudentAssistantFormCreateState
                   return null;
                 },
               ),
+
+              SizedBox(height: 10),
+
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: "Module",
+                  border: OutlineInputBorder(),
+                ),
+                items: [
+                  DropdownMenuItem(value: "SOD316", child: Text("SOD316")),
+                  DropdownMenuItem(value: "TPG316", child: Text("TPG316")),
+                  DropdownMenuItem(value: "CMN316", child: Text("CMN316")),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedValueModule = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Module is required";
+                  }
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 10),
+
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: "Second Module option",
+                  border: OutlineInputBorder(),
+                ),
+
+                items: [
+                  DropdownMenuItem(value: "SSE316", child: Text("SSE316")),
+                  DropdownMenuItem(value: "SOE316", child: Text("SOE316")),
+                  DropdownMenuItem(value: "ITS316", child: Text("ITS316")),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedValueModuleOption2 = value;
+                  });
+                },
+              ),
+
+              SizedBox(height: 20),
+
+              CheckboxListTile(
+                title: Text("I meet the minimum requirements"),
+                value: _meetRequirements,
+                onChanged: (value) {
+                  setState(() => _meetRequirements = value ?? false);
+                },
+              ),
             ],
           ),
         ),
@@ -160,29 +190,33 @@ class _StudentAssistantFormCreateState
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
-        onPressed: () async {
-          if(_formKey.currentState!.validate()){
-            
-            await Provider.of<StudentAssistantsViewModel>(
-              context,
-              listen: false,
-            ).createApplication(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            final (success, message) = widget.vm.createApplication(
+              studentNumber: _studentNumberController.text,
               name: _nameController.text,
               surname: _surnameController.text,
-              academicLevel: _selectedValueYear.toString(), 
-              module: _selectedValueModule.toString(), 
-              secondModule: _selectedValueYear.toString(), 
-              secondModuleLevel: _selectedValueYear.toString(), 
-              meetRequirements: true,
-              );
+              module: _selectedValueModule.toString(),
+              academicLevel: _selectedValueYear.toString(),
+              secondModule: _selectedValueModuleOption2 ?? "",
+              meetRequirements: _meetRequirements,
+            );
 
-              // ignore: use_build_context_synchronously
-              ScaffoldMessenger.of(context)
-              .showSnackBar(
-                const SnackBar(content: 
-                Text("Application Submitted"),
-                )
-              );
+            _results = success;
+
+            if (_results) {
+              showDialog(
+                context: context,
+                builder: (context) =>
+                    Dialog(child: PopUpSuccess(message: message)),
+              ).then((_) => Navigator.pop(context));
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) =>
+                    Dialog(child: PopUpFailed(errorMessage: message)),
+              ).then((_) => Navigator.pop(context));
+            }
           }
         },
         child: Text("Submit", style: TextStyle(color: Colors.white)),
