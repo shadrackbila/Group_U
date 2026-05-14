@@ -14,19 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //set your role here [Who ever who is working on autherisation]
-  final String role = "admin";
-
-  @override
-  void initState() {
-    super.initState();
-    if (role == "admin") {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushNamed(context, RouteManager.adminRead);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -70,25 +70,19 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  
+
                   // Title
                   const Text(
                     'Student Assistant Portal',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   const Text(
                     'Sign in to continue',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const SizedBox(height: 40),
-                  
+
                   // Email Field
                   TextFormField(
                     controller: _emailController,
@@ -109,7 +103,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Password Field
                   TextFormField(
                     controller: _passwordController,
@@ -119,7 +113,9 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
@@ -140,7 +136,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     },
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Login Button
                   authVM.isLoading
                       ? const CircularProgressIndicator()
@@ -157,7 +153,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             style: TextStyle(fontSize: 16),
                           ),
                         ),
-                  
+
                   // Error Message
                   if (authVM.errorMessage != null)
                     Padding(
